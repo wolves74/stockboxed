@@ -114,12 +114,14 @@ const mockups = [
   ["White Throw Blanket", "white-throw-blanket.png", "plain white throw blanket folded on a rustic bench in a bright neutral room"],
   ["Farmhouse Frame Light", "farmhouse-frame-light.png", "blank wood picture frame under a warm sconce on a bright white farmhouse wall"],
   ["White Ceramic Mug", "white-ceramic-mug.png", "plain white ceramic mug on a light wood table in a bright cozy neutral room"]
+["Other Custom Mockup", "stockboxed.png", "custom mockup or styled stock photo based on the user’s notes instead of a preset preview image"]
+["Other Custom Mockup", "stockboxed.png", "custom mockup or styled stock photo based on the user’s notes instead of a preset preview image"]
 ];
 
 let selected = mockups[0];
 
 function loadMockups() {
-  const grid = document.getElementById("mockupGrid");
+  const grid = document.getElementById("
   grid.innerHTML = "";
 
   mockups.forEach((m, i) => {
