@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>Stockboxed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       margin: 0;
@@ -11,15 +13,15 @@
     }
 
     .app {
-      max-width: 900px;
+      max-width: 950px;
       margin: auto;
       padding: 24px;
     }
 
     .logo {
       display: block;
-      width: 180px;
-      margin: 20px auto 10px;
+      width: 170px;
+      margin: 20px auto 8px;
     }
 
     h1, p {
@@ -28,7 +30,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 18px;
       margin-top: 24px;
     }
@@ -58,7 +60,14 @@
       font-size: 15px;
     }
 
-    textarea, input, select {
+    .section {
+      margin-top: 28px;
+      background: #fffaf5;
+      padding: 18px;
+      border-radius: 18px;
+    }
+
+    textarea, select {
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
@@ -79,13 +88,6 @@
       font-size: 16px;
     }
 
-    .section {
-      margin-top: 28px;
-      background: #fffaf5;
-      padding: 18px;
-      border-radius: 18px;
-    }
-
     #output {
       min-height: 220px;
     }
@@ -94,7 +96,8 @@
 
 <body>
   <div class="app">
-    <img src="images/stockboxed.png" class="logo">
+
+    <img src="images/stockboxed.PNG" class="logo" alt="Stockboxed logo">
 
     <h1>Stockboxed</h1>
     <p>Create realistic mockup prompts for patterns, fonts, artwork, and digital designs.</p>
@@ -122,23 +125,24 @@
       <button onclick="copyPrompt()">Copy Prompt</button>
       <button onclick="openChatGPT()">Open ChatGPT</button>
     </div>
+
   </div>
 
   <script>
     const mockups = [
       {
         name: "Phone Case Coastal Tray",
-        image: "images/phone-case-coastal-tray.png",
+        image: "images/phone-case-coastal-tray.PNG",
         prompt: "a cream iPhone case on a beachy wood serving tray with coastal neutral styling"
       },
       {
         name: "Distressed Navy Hat",
-        image: "images/distressed-navy-hat.png",
+        image: "images/distressed-navy-hat.PNG",
         prompt: "a distressed navy baseball hat worn by a young woman, bright realistic close-up"
       },
       {
         name: "Wood Sign Held Landscape",
-        image: "images/wood-sign-held-landscape.png",
+        image: "images/wood-sign-held-landscape.PNG",
         prompt: "a 24x12 landscape wood framed wall sign held by a woman in a bright neutral setting"
       },
       {
@@ -148,22 +152,22 @@
       },
       {
         name: "White Pillow Chair",
-        image: "images/white-pillow-chair.png",
+        image: "images/white-pillow-chair.PNG",
         prompt: "a large plain white square pillow on a neutral chair in a bright farmhouse setting"
       },
       {
         name: "White Throw Blanket",
-        image: "images/white-throw-blanket.png",
+        image: "images/white-throw-blanket.PNG",
         prompt: "a plain white throw blanket folded on a rustic bench in a bright neutral room"
       },
       {
         name: "Farmhouse Frame Light",
-        image: "images/farmhouse-frame-light.png",
+        image: "images/farmhouse-frame-light.PNG",
         prompt: "a blank wood picture frame under a warm sconce on a bright white farmhouse wall"
       },
       {
         name: "White Ceramic Mug",
-        image: "images/white-ceramic-mug.png",
+        image: "images/white-ceramic-mug.PNG",
         prompt: "a plain white ceramic mug on a light wood table in a bright cozy neutral room"
       }
     ];
@@ -176,8 +180,9 @@
       mockups.forEach((mockup, index) => {
         const card = document.createElement("div");
         card.className = "card" + (index === 0 ? " selected" : "");
+
         card.innerHTML = `
-          <img src="${mockup.image}">
+          <img src="${mockup.image}" alt="${mockup.name}">
           <h3>${mockup.name}</h3>
         `;
 
@@ -204,7 +209,7 @@ Apply the uploaded design naturally to the product surface while preserving real
 Keep the design area fully visible, clean, unobstructed, not cropped, not warped, and easy to see.
 
 Style direction:
-bright natural light, soft neutral tones, realistic editorial stock photography, modern farmhouse / coastal / boutique mockup feel, clean composition, minimal clutter, high-end Etsy listing quality.
+bright natural light, soft neutral tones, realistic editorial stock photography, modern farmhouse, coastal, boutique mockup feel, clean composition, minimal clutter, high-end Etsy listing quality.
 
 Important:
 Do not add fake logos or extra text.
@@ -231,5 +236,6 @@ ${notes}`;
 
     loadMockups();
   </script>
+
 </body>
 </html>
