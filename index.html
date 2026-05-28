@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stockboxed</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f4ee;
+      color: #2d2a26;
+    }
+
+    .app {
+      max-width: 900px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    .logo {
+      display: block;
+      width: 180px;
+      margin: 20px auto 10px;
+    }
+
+    h1, p {
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+      cursor: pointer;
+      border: 3px solid transparent;
+    }
+
+    .card.selected {
+      border-color: #b9935a;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 14px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      text-align: center;
+      font-size: 15px;
+    }
+
+    textarea, input, select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #2d2a26;
+      color: white;
+      font-size: 16px;
+    }
+
+    .section {
+      margin-top: 28px;
+      background: #fffaf5;
+      padding: 18px;
+      border-radius: 18px;
+    }
+
+    #output {
+      min-height: 220px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <img src="images/stockboxed.png" class="logo">
+
+    <h1>Stockboxed</h1>
+    <p>Create realistic mockup prompts for patterns, fonts, artwork, and digital designs.</p>
+
+    <div class="grid" id="mockupGrid"></div>
+
+    <div class="section">
+      <h2>Upload Type</h2>
+      <select id="uploadType">
+        <option>Pattern</option>
+        <option>Text / Font</option>
+        <option>Artwork</option>
+        <option>Logo</option>
+      </select>
+
+      <h2>Design Notes</h2>
+      <textarea id="notes" placeholder="Example: Use my floral pattern on the pillow. Keep it realistic, soft, and not warped."></textarea>
+
+      <button onclick="generatePrompt()">Generate Prompt</button>
+    </div>
+
+    <div class="section">
+      <h2>Your Prompt</h2>
+      <textarea id="output" readonly></textarea>
+      <button onclick="copyPrompt()">Copy Prompt</button>
+      <button onclick="openChatGPT()">Open ChatGPT</button>
+    </div>
+  </div>
+
+  <script>
+    const mockups = [
+      {
+        name: "Phone Case Coastal Tray",
+        image: "images/phone-case-coastal-tray.png",
+        prompt: "a cream iPhone case on a beachy wood serving tray with coastal neutral styling"
+      },
+      {
+        name: "Distressed Navy Hat",
+        image: "images/distressed-navy-hat.png",
+        prompt: "a distressed navy baseball hat worn by a young woman, bright realistic close-up"
+      },
+      {
+        name: "Wood Sign Held Landscape",
+        image: "images/wood-sign-held-landscape.png",
+        prompt: "a 24x12 landscape wood framed wall sign held by a woman in a bright neutral setting"
+      },
+      {
+        name: "Beach White Tee",
+        image: "images/beach-white-tee.png",
+        prompt: "a slightly oversized white t-shirt worn at the beach, close-up, muted coastal tones"
+      },
+      {
+        name: "White Pillow Chair",
+        image: "images/white-pillow-chair.png",
+        prompt: "a large plain white square pillow on a neutral chair in a bright farmhouse setting"
+      },
+      {
+        name: "White Throw Blanket",
+        image: "images/white-throw-blanket.png",
+        prompt: "a plain white throw blanket folded on a rustic bench in a bright neutral room"
+      },
+      {
+        name: "Farmhouse Frame Light",
+        image: "images/farmhouse-frame-light.png",
+        prompt: "a blank wood picture frame under a warm sconce on a bright white farmhouse wall"
+      },
+      {
+        name: "White Ceramic Mug",
+        image: "images/white-ceramic-mug.png",
+        prompt: "a plain white ceramic mug on a light wood table in a bright cozy neutral room"
+      }
+    ];
+
+    let selectedMockup = mockups[0];
+
+    function loadMockups() {
+      const grid = document.getElementById("mockupGrid");
+
+      mockups.forEach((mockup, index) => {
+        const card = document.createElement("div");
+        card.className = "card" + (index === 0 ? " selected" : "");
+        card.innerHTML = `
+          <img src="${mockup.image}">
+          <h3>${mockup.name}</h3>
+        `;
+
+        card.onclick = function() {
+          document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
+          card.classList.add("selected");
+          selectedMockup = mockup;
+        };
+
+        grid.appendChild(card);
+      });
+    }
+
+    function generatePrompt() {
+      const uploadType = document.getElementById("uploadType").value;
+      const notes = document.getElementById("notes").value;
+
+      const prompt = `Create a realistic high-end mockup inspired by the selected Stockboxed reference image: ${selectedMockup.prompt}.
+
+The user will upload a ${uploadType.toLowerCase()} to showcase on the mockup.
+
+Apply the uploaded design naturally to the product surface while preserving realistic lighting, perspective, shadows, texture, and scale.
+
+Keep the design area fully visible, clean, unobstructed, not cropped, not warped, and easy to see.
+
+Style direction:
+bright natural light, soft neutral tones, realistic editorial stock photography, modern farmhouse / coastal / boutique mockup feel, clean composition, minimal clutter, high-end Etsy listing quality.
+
+Important:
+Do not add fake logos or extra text.
+Do not distort the uploaded design.
+Do not obscure the mockup area.
+Do not make it look AI-generated.
+
+User notes:
+${notes}`;
+
+      document.getElementById("output").value = prompt;
+    }
+
+    function copyPrompt() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      alert("Prompt copied!");
+    }
+
+    function openChatGPT() {
+      window.open("https://chat.openai.com", "_blank");
+    }
+
+    loadMockups();
+  </script>
+</body>
+</html>
